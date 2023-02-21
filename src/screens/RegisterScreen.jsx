@@ -9,58 +9,77 @@ import HeaderText from "../components/HeaderText";
 import StyledButton from "../components/StyledButton";
 import StyledInlineText from "../components/StyledInlineText";
 import StyledTextInput from "../components/StyledTextInput";
+import { TextInput } from "react-native-paper";
+import { auth } from "../../App";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-const RegisterScreen = (props) => {
-  const {
-    handleSubmit,
-    formState: { errors },
-    trigger,
-    register,
-    watch,
-  } = useForm();
+const RegisterScreen = ({ navigation }) => {
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [registerError, setRegisterError] = useState("");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const { control, handleSubmit, watch, reset } = useForm();
 
-  const { navigation } = props;
+  const password = watch("password");
+
+  const onRegisterClick = (data) => {
+    setLoading(true);
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        reset("", {
+          keepValues: false,
+          keepDefaultValues: false,
+        });
+        setLoading(false);
+        navigation.navigate("Login");
+      })
+      .catch((error) => {
+        setLoading(false);
+        const errorCode = error.code;
+        if (errorCode === "auth/email-already-in-use") {
+          setRegisterError("Konto o podanym adresie E-mail już istnieje");
+        } else {
+          setRegisterError("Błąd rejestracji, spróbuj ponownie");
+        }
+      });
+  };
 
   return (
     <BackgroundGradient>
       <HeaderText
         text={"Rejestracja"}
-        additionalStyling={{ marginBottom: 0 }}
+        additionalStyling={{ marginBottom: 0, marginTop: 50 }}
       />
       <View style={{ width: "100%", marginTop: 30 }}>
         <StyledTextInput
-          registerLabel="email"
-          registerSettings={{
+          name="email"
+          placeholder="E-mail"
+          control={control}
+          icon="account"
+          secureTextEntry={false}
+          rules={{
             required: "Pole wymagane",
             pattern: {
               value: emailPattern,
-              message: "Błędny format e-mail",
+              message: "Wprowadź poprawny adres e-mail",
             },
-          }}
-          icon="account"
-          placeholder="E-mail"
-          secureTextEntry={false}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          error={Boolean(errors.email)}
-          errorMessage={
-            errors.email && (
-              <Text style={{ color: "red", marginVertical: 3 }}>
-                {errors.email.message}
-              </Text>
-            )
-          }
-          onKeyPress={() => {
-            trigger("email");
           }}
         />
         <StyledTextInput
-          registerLabel="password"
-          registerSettings={{
+          name="password"
+          placeholder="Hasło"
+          control={control}
+          icon="lock"
+          secureTextEntry={secureTextEntry}
+          right={
+            <TextInput.Icon
+              icon={"eye"}
+              iconColor={mainButton}
+              onPress={() => setSecureTextEntry(!secureTextEntry)}
+            />
+          }
+          rules={{
             required: "Pole wymagane",
             pattern: {
               value: passwordPattern,
@@ -68,48 +87,22 @@ const RegisterScreen = (props) => {
                 "Hasło powinno zawierać minimum: 1 wielką literę, 1 małą literę, 1 cyfrę, 1 znak specjalny oraz nie może być krótsze niż 8 znaków",
             },
           }}
-          icon="lock"
-          placeholder="Hasło"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          error={Boolean(errors.password)}
-          errorMessage={
-            errors.password && (
-              <Text style={{ color: "red", marginVertical: 3 }}>
-                {errors.password.message}
-              </Text>
-            )
-          }
-          onKeyPress={() => {
-            trigger("password");
-          }}
         />
         <StyledTextInput
-          registerLabel="confirmPassword"
-          registerSettings={{
-            required: "Pole wymagane",
-            validate: (value) =>
-              value === watch("password", "") || "Hasło nie są identyczne",
-            autocomplete: "off",
-          }}
+          name="repeatPassword"
+          placeholder="Powtórz Hasło"
+          control={control}
           icon="lock"
-          placeholder="Hasło"
-          secureTextEntry={true}
-          value={confirmPassword}
-          onChangeText={(text) => setConfirmPassword(text)}
-          error={Boolean(errors.password)}
-          errorMessage={
-            errors.password && (
-              <Text style={{ color: "red", marginVertical: 3 }}>
-                {errors.password.message}
-              </Text>
-            )
-          }
-          onKeyPress={() => {
-            trigger("confirmPassword");
+          secureTextEntry={secureTextEntry}
+          rules={{
+            validate: (value) => value == password || "Hasła nie są identyczne",
           }}
         />
+        {registerError ? (
+          <Text style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}>
+            {registerError}
+          </Text>
+        ) : null}
         <View style={{ marginTop: 40, width: "80%", alignSelf: "center" }}>
           <Shadow
             distance={10}
@@ -119,8 +112,9 @@ const RegisterScreen = (props) => {
             offset={[0, 0]}
           >
             <StyledButton
-              onPress={() => console.log("Register")}
+              onPress={handleSubmit(onRegisterClick)}
               text={"ZAREJESTRUJ SIĘ"}
+              loading={loading}
             />
           </Shadow>
         </View>

@@ -4,8 +4,7 @@ import { mainButton } from "../styles/AppStyles";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
-const StyledButton = (props) => {
-  const { onPress, text } = props;
+const StyledButton = ({ onPress, text, loading }) => {
 
   let [fontsLoaded] = useFonts({
     "Open-Sans-Regular": require("../../assets/fonts/OpenSans-Regular.ttf"),
@@ -32,6 +31,7 @@ const StyledButton = (props) => {
       buttonColor={mainButton}
       textColor="black"
       mode="contained"
+      loading={loading}
     >
       {text}
     </Button>

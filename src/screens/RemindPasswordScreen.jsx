@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { emailPattern } from "../../utils/validation.utils";
 import { mainButton } from "../styles/AppStyles";
@@ -9,19 +9,24 @@ import HeaderText from "../components/HeaderText";
 import StyledButton from "../components/StyledButton";
 import StyledInlineText from "../components/StyledInlineText";
 import StyledTextInput from "../components/StyledTextInput";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../App";
 
-const RemindPasswordScreen = (props) => {
-  const {
-    handleSubmit,
-    formState: { errors },
-    trigger,
-    register,
-    watch,
-  } = useForm();
+const RemindPasswordScreen = ({ navigation }) => {
+  const { control, handleSubmit } = useForm();
 
-  const [email, setEmail] = useState("");
+  const onRecoverPasswordClick = (data) => {
+    sendPasswordResetEmail(auth, data.email)
+      .then(() => {
+        console.log('email send')
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
 
-  const { navigation } = props;
+      });
+  };
 
   return (
     <BackgroundGradient>
@@ -31,29 +36,17 @@ const RemindPasswordScreen = (props) => {
       />
       <View style={{ width: "100%", marginTop: 30 }}>
         <StyledTextInput
-          registerLabel="email"
-          registerSettings={{
+          name="email"
+          placeholder="E-mail"
+          control={control}
+          icon="account"
+          secureTextEntry={false}
+          rules={{
             required: "Pole wymagane",
             pattern: {
               value: emailPattern,
-              message: "Błędny format e-mail",
+              message: "Wprowadź poprawny adres e-mail",
             },
-          }}
-          icon="account"
-          placeholder="E-mail"
-          secureTextEntry={false}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          error={Boolean(errors.email)}
-          errorMessage={
-            errors.email && (
-              <Text style={{ color: "red", marginVertical: 3 }}>
-                {errors.email.message}
-              </Text>
-            )
-          }
-          onKeyPress={() => {
-            trigger("email");
           }}
         />
         <View style={{ marginTop: 40, width: "80%", alignSelf: "center" }}>
@@ -65,10 +58,7 @@ const RemindPasswordScreen = (props) => {
             offset={[0, 0]}
           >
             <StyledButton
-              onPress={() => {
-                navigation.navigate("Login");
-                console.log("Hasło odzyskane");
-              }}
+              onPress={handleSubmit(onRecoverPasswordClick)}
               text={"ODZYSKAJ HASŁO"}
             />
           </Shadow>

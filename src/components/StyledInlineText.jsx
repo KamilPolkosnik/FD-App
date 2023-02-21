@@ -4,8 +4,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { mainButton } from "../styles/AppStyles";
 
-const StyledInlineText = (props) => {
-  const { onPress, text, inlineText } = props;
+const StyledInlineText = ({ onPress, text, inlineText }) => {
 
   let [fontsLoaded] = useFonts({
     "Open-Sans-Regular": require("../../assets/fonts/OpenSans-Regular.ttf"),

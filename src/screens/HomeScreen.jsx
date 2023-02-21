@@ -6,9 +6,7 @@ import BackgroundGradient from "../hoc/BackgroundGradient";
 import HeaderText from "../components/HeaderText";
 import StyledButton from "../components/StyledButton";
 
-const HomeScreen = (props) => {
-  const { navigation } = props;
-
+const HomeScreen = ({ navigation }) => {
   return (
     <BackgroundGradient>
       <HeaderText text={"Finanse & Dyscyplina"} />

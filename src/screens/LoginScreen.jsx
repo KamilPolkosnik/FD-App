@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { emailPattern, passwordPattern } from "../../utils/validation.utils";
+import { emailPattern } from "../../utils/validation.utils";
 import { mainButton } from "../styles/AppStyles";
 import { Shadow } from "react-native-shadow-2";
 import BackgroundGradient from "../hoc/BackgroundGradient";
@@ -9,78 +9,85 @@ import HeaderText from "../components/HeaderText";
 import StyledButton from "../components/StyledButton";
 import StyledInlineText from "../components/StyledInlineText";
 import StyledTextInput from "../components/StyledTextInput";
+import { TextInput } from "react-native-paper";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../App";
 
-const LoginScreen = (props) => {
-  const {
-    handleSubmit,
-    formState: { errors },
-    trigger,
-    register,
-    watch,
-  } = useForm();
+const LoginScreen = ({ navigation }) => {
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { control, handleSubmit, reset } = useForm();
 
-  const { navigation } = props;
+  const onLoginClick = (data) => {
+    setLoading(true);
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        reset("", {
+          keepValues: false,
+          keepDefaultValues: false,
+        });
+        setLoading(false);
+        navigation.navigate("Dashboard");
+      })
+      .catch((error) => {
+        setLoading(false);
+        const errorCode = error.code;
+        if (errorCode === "auth/user-not-found") {
+          setLoginError("Użytkownik nie istnieje");
+        } else if (errorCode === "auth/wrong-password") {
+          setLoginError("Błędne hasło");
+        } else {
+          setLoginError("Błąd logowania, spróbuj ponownie");
+        }
+      });
+  };
 
   return (
     <BackgroundGradient>
-      <HeaderText text={"Logowanie"} additionalStyling={{ marginBottom: 0 }} />
+      <HeaderText
+        text={"Logowanie"}
+        additionalStyling={{ marginBottom: 0, marginTop: 50 }}
+      />
       <View style={{ width: "100%", marginTop: 30 }}>
         <StyledTextInput
-          registerLabel="email"
-          registerSettings={{
+          name="email"
+          placeholder="E-mail"
+          control={control}
+          icon="account"
+          secureTextEntry={false}
+          rules={{
             required: "Pole wymagane",
             pattern: {
               value: emailPattern,
-              message: "Błędny format e-mail",
+              message: "Wprowadź poprawny adres e-mail",
             },
-          }}
-          icon="account"
-          placeholder="E-mail"
-          secureTextEntry={false}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          error={Boolean(errors.email)}
-          errorMessage={
-            errors.email && (
-              <Text style={{ color: "red", marginVertical: 3 }}>
-                {errors.email.message}
-              </Text>
-            )
-          }
-          onKeyPress={() => {
-            trigger("email");
           }}
         />
         <StyledTextInput
-          registerLabel="password"
-          registerSettings={{
-            required: "Pole wymagane",
-            pattern: {
-              value: passwordPattern,
-              message:
-                "Hasło powinno zawierać minimum: 1 wielką literę, 1 małą literę, 1 cyfrę, 1 znak specjalny oraz nie może być krótsze niż 8 znaków",
-            },
-          }}
-          icon="lock"
+          name="password"
           placeholder="Hasło"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          error={Boolean(errors.password)}
-          errorMessage={
-            errors.password && (
-              <Text style={{ color: "red", marginVertical: 3 }}>
-                {errors.password.message}
-              </Text>
-            )
+          control={control}
+          icon="lock"
+          secureTextEntry={secureTextEntry}
+          right={
+            <TextInput.Icon
+              icon={"eye"}
+              iconColor={mainButton}
+              onPress={() => setSecureTextEntry(!secureTextEntry)}
+            />
           }
-          onKeyPress={() => {
-            trigger("password");
+          rules={{
+            required: "Pole wymagane",
           }}
         />
+        {loginError ? (
+          <Text style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}>
+            {loginError}
+          </Text>
+        ) : null}
         <View style={{ marginTop: 40, width: "80%", alignSelf: "center" }}>
           <Shadow
             distance={10}
@@ -90,8 +97,9 @@ const LoginScreen = (props) => {
             offset={[0, 0]}
           >
             <StyledButton
-              onPress={() => console.log("Login")}
+              onPress={handleSubmit(onLoginClick)}
               text={"ZALOGUJ SIĘ"}
+              loading={loading}
             />
           </Shadow>
         </View>
