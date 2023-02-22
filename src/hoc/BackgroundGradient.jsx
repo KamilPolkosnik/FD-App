@@ -1,6 +1,6 @@
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import AppStyles, { mainBlue, mainPurple } from "../styles/AppStyles";
+import { mainBlue, mainPurple } from "../styles/AppStyles";
 import { ScrollView } from "react-native";
 
 const BackgroundGradient = (props) => {

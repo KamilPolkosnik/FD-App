@@ -1,12 +1,17 @@
 import { Image, View } from "react-native";
 import { mainButton } from "../styles/AppStyles";
-import React from "react";
+import React, { useEffect } from "react";
 import { Shadow } from "react-native-shadow-2";
 import BackgroundGradient from "../hoc/BackgroundGradient";
 import HeaderText from "../components/HeaderText";
 import StyledButton from "../components/StyledButton";
+import { auth } from "../../App";
 
 const HomeScreen = ({ navigation }) => {
+  if (auth.currentUser) {
+    navigation.navigate("Dashboard", { user: auth.currentUser });
+  }
+
   return (
     <BackgroundGradient>
       <HeaderText text={"Finanse & Dyscyplina"} />

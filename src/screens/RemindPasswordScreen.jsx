@@ -16,22 +16,18 @@ const RemindPasswordScreen = ({ navigation }) => {
   const { control, handleSubmit } = useForm();
 
   const [loading, setLoading] = useState(false);
-  const [recoverMessage, setRecoverMessage] = useState("");
   const [recoverErrorMessage, setRecoverErrorMessage] = useState("");
 
   const onRecoverPasswordClick = (data) => {
     setRecoverErrorMessage("");
-    setRecoverMessage("");
     setLoading(true);
     sendPasswordResetEmail(auth, data.email)
       .then(() => {
-        setRecoverMessage(
-          "Link do zmiany hasła został wysłany, za chwilę zostaniesz przeniesiony do ekranu logowania"
-        );
-        setTimeout(() => {
-          navigation.navigate("Login");
-        }, 4000);
         setLoading(false);
+        navigation.navigate("Redirect", {
+          redirectText:
+            "Link do zmiany hasła został wysłany, za chwilę zostaniesz przeniesiony do ekranu logowania",
+        });
       })
       .catch((error) => {
         setLoading(false);
@@ -68,13 +64,6 @@ const RemindPasswordScreen = ({ navigation }) => {
             },
           }}
         />
-        {recoverMessage ? (
-          <Text
-            style={{ color: "#02FB3E", alignSelf: "stretch", marginTop: 3 }}
-          >
-            {recoverMessage}
-          </Text>
-        ) : null}
         {recoverErrorMessage ? (
           <Text style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}>
             {recoverErrorMessage}

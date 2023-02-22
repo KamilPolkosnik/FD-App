@@ -37,8 +37,12 @@ const RegisterScreen = ({ navigation }) => {
           keepDefaultValues: false,
         });
         setLoading(false);
-        navigation.navigate("Login");
+        navigation.navigate("Redirect", {
+          redirectText:
+            "Udało się założyć konto. Za chwilę zostaniesz przekierowany do swojego profilu.",
+        });
       })
+      .then(() => {})
       .catch((error) => {
         setLoading(false);
         const errorCode = error.code;

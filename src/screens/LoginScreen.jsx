@@ -18,6 +18,10 @@ const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
 
+  if (auth.currentUser) {
+    navigation.navigate("Dashboard", { user: auth.currentUser });
+  }
+
   const { control, handleSubmit, reset } = useForm();
 
   const onLoginClick = (data) => {
@@ -40,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
         } else if (errorCode === "auth/wrong-password") {
           setLoginError("Błędne hasło");
         } else {
-          setLoginError("Błąd logowania, spróbuj ponownie");
+          setLoginError("Coś poszło nie tak. Spróbuj ponownie");
         }
       });
   };
