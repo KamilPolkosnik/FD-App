@@ -16,7 +16,7 @@ const BackgroundGradient = (props) => {
           justifyContent: "center",
           alignContent: "center",
           alignItems: "center",
-          width: "100%"
+          width: "100%",
         }}
       >
         {props.children}

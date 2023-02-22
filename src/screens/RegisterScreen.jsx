@@ -11,7 +11,7 @@ import StyledInlineText from "../components/StyledInlineText";
 import StyledTextInput from "../components/StyledTextInput";
 import { TextInput } from "react-native-paper";
 import { auth } from "../../App";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const RegisterScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -21,11 +21,16 @@ const RegisterScreen = ({ navigation }) => {
   const { control, handleSubmit, watch, reset } = useForm();
 
   const password = watch("password");
+  const name = watch("displayName");
 
   const onRegisterClick = (data) => {
+    setRegisterError("");
     setLoading(true);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
+        updateProfile(auth.currentUser, {
+          displayName: name,
+        });
         const user = userCredential.user;
         reset("", {
           keepValues: false,
@@ -40,7 +45,7 @@ const RegisterScreen = ({ navigation }) => {
         if (errorCode === "auth/email-already-in-use") {
           setRegisterError("Konto o podanym adresie E-mail już istnieje");
         } else {
-          setRegisterError("Błąd rejestracji, spróbuj ponownie");
+          setRegisterError("Coś poszło nie tak. Spróbuj ponownie");
         }
       });
   };
@@ -53,10 +58,26 @@ const RegisterScreen = ({ navigation }) => {
       />
       <View style={{ width: "100%", marginTop: 30 }}>
         <StyledTextInput
+          name="displayName"
+          placeholder="Imię"
+          control={control}
+          icon="account"
+          autoCapitalize={true}
+          secureTextEntry={false}
+          rules={{
+            required: "Pole wymagane",
+            minLength: {
+              value: 2,
+              message: "Imię musi zawierać minimum 2 znaki",
+            },
+          }}
+        />
+        <StyledTextInput
           name="email"
           placeholder="E-mail"
           control={control}
           icon="account"
+          autoCapitalize={false}
           secureTextEntry={false}
           rules={{
             required: "Pole wymagane",
@@ -71,6 +92,7 @@ const RegisterScreen = ({ navigation }) => {
           placeholder="Hasło"
           control={control}
           icon="lock"
+          autoCapitalize={false}
           secureTextEntry={secureTextEntry}
           right={
             <TextInput.Icon

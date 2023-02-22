@@ -21,16 +21,16 @@ const LoginScreen = ({ navigation }) => {
   const { control, handleSubmit, reset } = useForm();
 
   const onLoginClick = (data) => {
+    setLoginError("");
     setLoading(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
-        const user = userCredential.user;
         reset("", {
           keepValues: false,
           keepDefaultValues: false,
         });
         setLoading(false);
-        navigation.navigate("Dashboard");
+        navigation.navigate("Dashboard", { user: userCredential.user });
       })
       .catch((error) => {
         setLoading(false);
@@ -57,6 +57,7 @@ const LoginScreen = ({ navigation }) => {
           placeholder="E-mail"
           control={control}
           icon="account"
+          autoCapitalize={false}
           secureTextEntry={false}
           rules={{
             required: "Pole wymagane",
@@ -71,6 +72,7 @@ const LoginScreen = ({ navigation }) => {
           placeholder="Hasło"
           control={control}
           icon="lock"
+          autoCapitalize={false}
           secureTextEntry={secureTextEntry}
           right={
             <TextInput.Icon

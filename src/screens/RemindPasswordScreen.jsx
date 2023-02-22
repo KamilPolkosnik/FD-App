@@ -1,5 +1,5 @@
-import { View } from "react-native";
-import React from "react";
+import { View, Text } from "react-native";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { emailPattern } from "../../utils/validation.utils";
 import { mainButton } from "../styles/AppStyles";
@@ -15,16 +15,34 @@ import { auth } from "../../App";
 const RemindPasswordScreen = ({ navigation }) => {
   const { control, handleSubmit } = useForm();
 
+  const [loading, setLoading] = useState(false);
+  const [recoverMessage, setRecoverMessage] = useState("");
+  const [recoverErrorMessage, setRecoverErrorMessage] = useState("");
+
   const onRecoverPasswordClick = (data) => {
+    setRecoverErrorMessage("");
+    setRecoverMessage("");
+    setLoading(true);
     sendPasswordResetEmail(auth, data.email)
       .then(() => {
-        console.log('email send')
+        setRecoverMessage(
+          "Link do zmiany hasła został wysłany, za chwilę zostaniesz przeniesiony do ekranu logowania"
+        );
+        setTimeout(() => {
+          navigation.navigate("Login");
+        }, 4000);
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-
+        if (errorCode === "auth/user-not-found") {
+          setRecoverErrorMessage(
+            "Użytkownik o podanym adresie e-mail nie istnieje"
+          );
+        } else {
+          setRecoverErrorMessage("Coś poszło nie tak. Spróbuj ponownie");
+        }
       });
   };
 
@@ -40,6 +58,7 @@ const RemindPasswordScreen = ({ navigation }) => {
           placeholder="E-mail"
           control={control}
           icon="account"
+          autoCapitalize={false}
           secureTextEntry={false}
           rules={{
             required: "Pole wymagane",
@@ -49,6 +68,18 @@ const RemindPasswordScreen = ({ navigation }) => {
             },
           }}
         />
+        {recoverMessage ? (
+          <Text
+            style={{ color: "#02FB3E", alignSelf: "stretch", marginTop: 3 }}
+          >
+            {recoverMessage}
+          </Text>
+        ) : null}
+        {recoverErrorMessage ? (
+          <Text style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}>
+            {recoverErrorMessage}
+          </Text>
+        ) : null}
         <View style={{ marginTop: 40, width: "80%", alignSelf: "center" }}>
           <Shadow
             distance={10}
@@ -60,6 +91,7 @@ const RemindPasswordScreen = ({ navigation }) => {
             <StyledButton
               onPress={handleSubmit(onRecoverPasswordClick)}
               text={"ODZYSKAJ HASŁO"}
+              loading={loading}
             />
           </Shadow>
         </View>
