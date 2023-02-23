@@ -1,17 +1,17 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { emailPattern } from "../../utils/validation.utils";
-import { mainButton } from "../styles/AppStyles";
+import { emailPattern } from "../../../utils/validation.utils";
+import { mainButton } from "../../styles/AppStyles";
 import { Shadow } from "react-native-shadow-2";
-import BackgroundGradient from "../hoc/BackgroundGradient";
-import HeaderText from "../components/HeaderText";
-import StyledButton from "../components/StyledButton";
-import StyledInlineText from "../components/StyledInlineText";
-import StyledTextInput from "../components/StyledTextInput";
+import BackgroundGradient from "../../hoc/BackgroundGradient";
+import HeaderText from "../../components/HeaderText";
+import StyledButton from "../../components/StyledButton";
+import StyledInlineText from "../../components/StyledInlineText";
+import StyledTextInput from "../../components/StyledTextInput";
 import { TextInput } from "react-native-paper";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../App";
+import { auth } from '../../firebase/FirebaseConfig';
 
 const LoginScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -19,7 +19,7 @@ const LoginScreen = ({ navigation }) => {
   const [loginError, setLoginError] = useState("");
 
   if (auth.currentUser) {
-    navigation.navigate("Dashboard", { user: auth.currentUser });
+    navigation.navigate("PostAuth", { user: auth.currentUser });
   }
 
   const { control, handleSubmit, reset } = useForm();
@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
           keepDefaultValues: false,
         });
         setLoading(false);
-        navigation.navigate("Dashboard", { user: userCredential.user });
+        navigation.navigate("PostAuth", { user: userCredential.user });
       })
       .catch((error) => {
         setLoading(false);
@@ -82,7 +82,9 @@ const LoginScreen = ({ navigation }) => {
             <TextInput.Icon
               icon={"eye"}
               iconColor={mainButton}
-              onPress={() => setSecureTextEntry(!secureTextEntry)}
+              onPress={() => {
+                setSecureTextEntry(!secureTextEntry)
+              }}
             />
           }
           rules={{

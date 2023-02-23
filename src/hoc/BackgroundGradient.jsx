@@ -10,7 +10,7 @@ const BackgroundGradient = (props) => {
       style={{ flex: 1, height: "100%" }}
     >
       <ScrollView
-        style={{ paddingHorizontal: 30 }}
+        style={{ marginHorizontal: 30 }}
         contentContainerStyle={{
           flex: 1,
           justifyContent: "center",

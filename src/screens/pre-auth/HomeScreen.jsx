@@ -1,15 +1,15 @@
 import { Image, View } from "react-native";
-import { mainButton } from "../styles/AppStyles";
-import React, { useEffect } from "react";
+import { mainButton } from "../../styles/AppStyles";
+import React from "react";
 import { Shadow } from "react-native-shadow-2";
-import BackgroundGradient from "../hoc/BackgroundGradient";
-import HeaderText from "../components/HeaderText";
-import StyledButton from "../components/StyledButton";
-import { auth } from "../../App";
+import BackgroundGradient from "../../hoc/BackgroundGradient";
+import HeaderText from "../../components/HeaderText";
+import StyledButton from "../../components/StyledButton";
+import { auth } from '../../firebase/FirebaseConfig';
 
 const HomeScreen = ({ navigation }) => {
   if (auth.currentUser) {
-    navigation.navigate("Dashboard", { user: auth.currentUser });
+    navigation.navigate("PostAuth", { user: auth.currentUser });
   }
 
   return (
@@ -22,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
         offset={[0, 0]}
       >
         <Image
-          source={require("../../assets/FD.png")}
+          source={require("../../../assets/FD.png")}
           style={{
             width: 200,
             height: 200,

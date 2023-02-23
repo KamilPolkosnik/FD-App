@@ -1,8 +1,8 @@
 import { Text } from "react-native";
 import React from "react";
 import { ActivityIndicator } from "react-native-paper";
-import { mainButton } from "../styles/AppStyles";
-import BackgroundGradient from "../hoc/BackgroundGradient";
+import { mainButton } from "../../styles/AppStyles";
+import BackgroundGradient from "../../hoc/BackgroundGradient";
 
 const RedirectScreen = ({ navigation, route }) => {
   setTimeout(() => {

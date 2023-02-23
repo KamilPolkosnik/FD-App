@@ -1,16 +1,16 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { emailPattern, passwordPattern } from "../../utils/validation.utils";
-import { mainButton } from "../styles/AppStyles";
+import { emailPattern, passwordPattern } from "../../../utils/validation.utils";
+import { mainButton } from "../../styles/AppStyles";
 import { Shadow } from "react-native-shadow-2";
-import BackgroundGradient from "../hoc/BackgroundGradient";
-import HeaderText from "../components/HeaderText";
-import StyledButton from "../components/StyledButton";
-import StyledInlineText from "../components/StyledInlineText";
-import StyledTextInput from "../components/StyledTextInput";
+import BackgroundGradient from "../../hoc/BackgroundGradient";
+import HeaderText from "../../components/HeaderText";
+import StyledButton from "../../components/StyledButton";
+import StyledInlineText from "../../components/StyledInlineText";
+import StyledTextInput from "../../components/StyledTextInput";
 import { TextInput } from "react-native-paper";
-import { auth } from "../../App";
+import { auth } from '../../firebase/FirebaseConfig';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const RegisterScreen = ({ navigation }) => {

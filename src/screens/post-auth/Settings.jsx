@@ -1,19 +1,18 @@
-import { Text } from "react-native";
 import React, { useState } from "react";
-import BackgroundGradient from "../hoc/BackgroundGradient";
-import StyledButton from "../components/StyledButton";
+import BackgroundGradient from "../../hoc/BackgroundGradient";
 import { signOut } from "firebase/auth";
-import { auth } from "../../App";
+import StyledButton from "../../components/StyledButton";
+import { auth } from "../../firebase/FirebaseConfig";
 
-const Dashboard = ({ navigation }) => {
+const Settings = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const logOut = () => {
     setLoading(true);
     signOut(auth)
       .then(() => {
-        setLoading(false);
         navigation.navigate("Home");
+        setLoading(false);
       })
       .catch((error) => {
         setLoading(false);
@@ -22,12 +21,9 @@ const Dashboard = ({ navigation }) => {
 
   return (
     <BackgroundGradient>
-      <Text style={{ color: "white", marginVertical: 60 }}>
-        Cześć {auth.currentUser ? auth.currentUser.displayName : null}
-      </Text>
       <StyledButton text={"WYLOGUJ SIĘ"} onPress={logOut} loading={loading} />
     </BackgroundGradient>
   );
 };
 
-export default Dashboard;
+export default Settings;
