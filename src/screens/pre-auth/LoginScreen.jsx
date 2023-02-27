@@ -1,22 +1,23 @@
 import { View, Text } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { emailPattern } from "../../../utils/validation.utils";
 import { mainButton } from "../../styles/AppStyles";
-import { Shadow } from "react-native-shadow-2";
 import BackgroundGradient from "../../hoc/BackgroundGradient";
 import HeaderText from "../../components/HeaderText";
 import StyledButton from "../../components/StyledButton";
 import StyledInlineText from "../../components/StyledInlineText";
-import StyledTextInput from "../../components/StyledTextInput";
-import { TextInput } from "react-native-paper";
+import { TextInput, ActivityIndicator } from "react-native-paper";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../../firebase/FirebaseConfig';
+import { auth } from "../../firebase/FirebaseConfig";
+import { Controller } from "react-hook-form";
 
 const LoginScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loading, setLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
+
+  const nextButtonRef = useRef();
 
   if (auth.currentUser) {
     navigation.navigate("PostAuth", { user: auth.currentUser });
@@ -32,37 +33,37 @@ const LoginScreen = ({ navigation }) => {
         reset("", {
           keepValues: false,
           keepDefaultValues: false,
-        });
-        setLoading(false);
+        })
+        setLoading(false)
         navigation.navigate("PostAuth", { user: userCredential.user });
       })
       .catch((error) => {
         setLoading(false);
+        reset("", {
+          keepValues: false,
+          keepDefaultValues: false,
+        });
         const errorCode = error.code;
         if (errorCode === "auth/user-not-found") {
           setLoginError("Użytkownik nie istnieje");
         } else if (errorCode === "auth/wrong-password") {
           setLoginError("Błędne hasło");
         } else {
-          setLoginError("Coś poszło nie tak. Spróbuj ponownie");
+          setLoginError("Coś poszło nie tak, spróbuj ponownie");
         }
       });
   };
 
   return (
-    <BackgroundGradient>
+    <BackgroundGradient marginHorizontal={30} justifyContent={'center'} flex={1}>
       <HeaderText
         text={"Logowanie"}
         additionalStyling={{ marginBottom: 0, marginTop: 50 }}
       />
       <View style={{ width: "100%", marginTop: 30 }}>
-        <StyledTextInput
-          name="email"
-          placeholder="E-mail"
+        <Controller
           control={control}
-          icon="account"
-          autoCapitalize={false}
-          secureTextEntry={false}
+          name="email"
           rules={{
             required: "Pole wymagane",
             pattern: {
@@ -70,26 +71,93 @@ const LoginScreen = ({ navigation }) => {
               message: "Wprowadź poprawny adres e-mail",
             },
           }}
+          render={({
+            field: { value = "", onChange, onBlur },
+            fieldState: { error },
+          }) => (
+            <>
+              <TextInput
+                style={{
+                  backgroundColor: "rgba(81, 91, 140, 0.9)",
+                  width: "100%",
+                  fontSize: 16,
+                }}
+                outlineStyle={{ borderRadius: 15, borderWidth: 0 }}
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  nextButtonRef.current.focus();
+                }}
+                blurOnSubmit={false}
+                mode="outlined"
+                autoCapitalize={false}
+                left={
+                  <TextInput.Icon icon={"account"} iconColor={mainButton} />
+                }
+                placeholder="E-mail"
+                placeholderTextColor={"white"}
+                textColor={"white"}
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+              {error && (
+                <Text
+                  style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}
+                >
+                  {error.message || "Błąd, spróbuj ponownie"}
+                </Text>
+              )}
+            </>
+          )}
         />
-        <StyledTextInput
-          name="password"
-          placeholder="Hasło"
+        <Controller
           control={control}
-          icon="lock"
-          autoCapitalize={false}
-          secureTextEntry={secureTextEntry}
-          right={
-            <TextInput.Icon
-              icon={"eye"}
-              iconColor={mainButton}
-              onPress={() => {
-                setSecureTextEntry(!secureTextEntry)
-              }}
-            />
-          }
+          name="password"
           rules={{
             required: "Pole wymagane",
           }}
+          render={({
+            field: { value = "", onChange, onBlur },
+            fieldState: { error },
+          }) => (
+            <>
+              <TextInput
+                style={{
+                  backgroundColor: "rgba(81, 91, 140, 0.9)",
+                  width: "100%",
+                  fontSize: 16,
+                }}
+                outlineStyle={{ borderRadius: 15, borderWidth: 0 }}
+                mode="outlined"
+                ref={nextButtonRef}
+                autoCapitalize={false}
+                secureTextEntry={secureTextEntry}
+                left={<TextInput.Icon icon={"lock"} iconColor={mainButton} />}
+                right={
+                  <TextInput.Icon
+                    icon={"eye"}
+                    iconColor={mainButton}
+                    onPress={() => {
+                      setSecureTextEntry(!secureTextEntry);
+                    }}
+                  />
+                }
+                placeholder="Hasło"
+                placeholderTextColor={"white"}
+                textColor={"white"}
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+              {error && (
+                <Text
+                  style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}
+                >
+                  {error.message || "Błąd, spróbuj ponownie"}
+                </Text>
+              )}
+            </>
+          )}
         />
         {loginError ? (
           <Text style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}>
@@ -97,19 +165,10 @@ const LoginScreen = ({ navigation }) => {
           </Text>
         ) : null}
         <View style={{ marginTop: 40, width: "80%", alignSelf: "center" }}>
-          <Shadow
-            distance={10}
-            style={{ width: "100%", borderRadius: 10 }}
-            startColor={mainButton}
-            endColor={"#43EDF600"}
-            offset={[0, 0]}
-          >
-            <StyledButton
-              onPress={handleSubmit(onLoginClick)}
-              text={"ZALOGUJ SIĘ"}
-              loading={loading}
-            />
-          </Shadow>
+          <StyledButton
+            onPress={handleSubmit(onLoginClick)}
+            text={"ZALOGUJ SIĘ"}
+          />
         </View>
       </View>
       <View style={{ flexDirection: "column", marginTop: 50 }}>
@@ -124,8 +183,14 @@ const LoginScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("Register")}
         />
       </View>
+      <ActivityIndicator
+        style={{ position: 'absolute', top: '50%' }}
+        animating={loading}
+        color={mainButton}
+        size="large"
+      />
     </BackgroundGradient>
-  );
+  )
 };
 
 export default LoginScreen;

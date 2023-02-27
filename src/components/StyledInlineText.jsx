@@ -5,7 +5,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { mainButton } from "../styles/AppStyles";
 
 const StyledInlineText = ({ onPress, text, inlineText }) => {
-
   let [fontsLoaded] = useFonts({
     "Open-Sans-Regular": require("../../assets/fonts/OpenSans-Regular.ttf"),
     "Open-Sans-Bold": require("../../assets/fonts/OpenSans-Bold.ttf"),

@@ -5,7 +5,6 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
 const HeaderText = ({ text, additionalStyling }) => {
-
   let [fontsLoaded] = useFonts({
     "Open-Sans-Regular": require("../../assets/fonts/OpenSans-Regular.ttf"),
     "Open-Sans-Bold": require("../../assets/fonts/OpenSans-Bold.ttf"),

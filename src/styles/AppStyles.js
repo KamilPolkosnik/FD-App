@@ -12,5 +12,5 @@ export default StyleSheet.create({
       textTransform: 'uppercase',
       fontFamily: "Open-Sans-Bold",
       marginBottom: 50
-    },
+    }
   });

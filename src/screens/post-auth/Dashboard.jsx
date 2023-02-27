@@ -5,7 +5,7 @@ import { auth } from "../../firebase/FirebaseConfig";
 
 const Dashboard = () => {
   return (
-    <BackgroundGradient>
+    <BackgroundGradient marginHorizontal={30} justifyContent={'center'} flex={1}>
       <Text
         style={{
           color: "white",
@@ -20,3 +20,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

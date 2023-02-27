@@ -2,18 +2,18 @@ import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { emailPattern } from "../../../utils/validation.utils";
-import { mainButton } from "../../styles/AppStyles";
-import { Shadow } from "react-native-shadow-2";
 import BackgroundGradient from "../../hoc/BackgroundGradient";
 import HeaderText from "../../components/HeaderText";
 import StyledButton from "../../components/StyledButton";
 import StyledInlineText from "../../components/StyledInlineText";
-import StyledTextInput from "../../components/StyledTextInput";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from '../../firebase/FirebaseConfig';
+import { auth } from "../../firebase/FirebaseConfig";
+import { Controller } from "react-hook-form";
+import { TextInput, ActivityIndicator } from "react-native-paper";
+import { mainButton } from "../../styles/AppStyles";
 
 const RemindPasswordScreen = ({ navigation }) => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, reset } = useForm();
 
   const [loading, setLoading] = useState(false);
   const [recoverErrorMessage, setRecoverErrorMessage] = useState("");
@@ -23,14 +23,23 @@ const RemindPasswordScreen = ({ navigation }) => {
     setLoading(true);
     sendPasswordResetEmail(auth, data.email)
       .then(() => {
+        reset("", {
+          keepValues: false,
+          keepDefaultValues: false,
+        });
         setLoading(false);
         navigation.navigate("Redirect", {
           redirectText:
             "Link do zmiany hasła został wysłany, za chwilę zostaniesz przeniesiony do ekranu logowania",
+          redirectToLogin: true,
         });
       })
       .catch((error) => {
         setLoading(false);
+        reset("", {
+          keepValues: false,
+          keepDefaultValues: false,
+        });
         const errorCode = error.code;
         if (errorCode === "auth/user-not-found") {
           setRecoverErrorMessage(
@@ -43,19 +52,15 @@ const RemindPasswordScreen = ({ navigation }) => {
   };
 
   return (
-    <BackgroundGradient>
+    <BackgroundGradient marginHorizontal={30} justifyContent={'center'} flex={1}>
       <HeaderText
         text={"Odzyskiwanie hasła"}
         additionalStyling={{ marginBottom: 0 }}
       />
       <View style={{ width: "100%", marginTop: 30 }}>
-        <StyledTextInput
-          name="email"
-          placeholder="E-mail"
+        <Controller
           control={control}
-          icon="account"
-          autoCapitalize={false}
-          secureTextEntry={false}
+          name="email"
           rules={{
             required: "Pole wymagane",
             pattern: {
@@ -63,6 +68,39 @@ const RemindPasswordScreen = ({ navigation }) => {
               message: "Wprowadź poprawny adres e-mail",
             },
           }}
+          render={({
+            field: { value = "", onChange, onBlur },
+            fieldState: { error },
+          }) => (
+            <>
+              <TextInput
+                style={{
+                  backgroundColor: "rgba(81, 91, 140, 0.9)",
+                  width: "100%",
+                  fontSize: 16,
+                }}
+                outlineStyle={{ borderRadius: 15, borderWidth: 0 }}
+                mode="outlined"
+                autoCapitalize={false}
+                left={
+                  <TextInput.Icon icon={"account"} iconColor={mainButton} />
+                }
+                placeholder="E-mail"
+                placeholderTextColor={"white"}
+                textColor={"white"}
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+              {error && (
+                <Text
+                  style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}
+                >
+                  {error.message || "Błąd, spróbuj ponownie"}
+                </Text>
+              )}
+            </>
+          )}
         />
         {recoverErrorMessage ? (
           <Text style={{ color: "red", alignSelf: "stretch", marginTop: 3 }}>
@@ -70,19 +108,10 @@ const RemindPasswordScreen = ({ navigation }) => {
           </Text>
         ) : null}
         <View style={{ marginTop: 40, width: "80%", alignSelf: "center" }}>
-          <Shadow
-            distance={10}
-            style={{ width: "100%", borderRadius: 10 }}
-            startColor={mainButton}
-            endColor={"#43EDF600"}
-            offset={[0, 0]}
-          >
-            <StyledButton
-              onPress={handleSubmit(onRecoverPasswordClick)}
-              text={"ODZYSKAJ HASŁO"}
-              loading={loading}
-            />
-          </Shadow>
+          <StyledButton
+            onPress={handleSubmit(onRecoverPasswordClick)}
+            text={"ODZYSKAJ HASŁO"}
+          />
         </View>
       </View>
 
@@ -93,6 +122,12 @@ const RemindPasswordScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("Register")}
         />
       </View>
+      <ActivityIndicator
+        style={{ position: 'absolute', top: '50%' }}
+        animating={loading}
+        color={mainButton}
+        size="large"
+      />
     </BackgroundGradient>
   );
 };

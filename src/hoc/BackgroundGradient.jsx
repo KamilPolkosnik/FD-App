@@ -3,26 +3,29 @@ import { LinearGradient } from "expo-linear-gradient";
 import { mainBlue, mainPurple } from "../styles/AppStyles";
 import { ScrollView } from "react-native";
 
-const BackgroundGradient = (props) => {
+const BackgroundGradient = ({ marginHorizontal, children, justifyContent, flex }) => {
   return (
     <LinearGradient
       colors={[mainBlue, mainPurple]}
       style={{ flex: 1, height: "100%" }}
+      locations={[0, 1]}
     >
       <ScrollView
-        style={{ marginHorizontal: 30 }}
+        style={{ marginHorizontal: marginHorizontal }}
         contentContainerStyle={{
-          flex: 1,
-          justifyContent: "center",
+          flex: flex,
+          justifyContent: justifyContent,
           alignContent: "center",
           alignItems: "center",
           width: "100%",
+          minHeight: "100%",
         }}
       >
-        {props.children}
+        {children}
       </ScrollView>
     </LinearGradient>
   );
 };
 
 export default BackgroundGradient;
+

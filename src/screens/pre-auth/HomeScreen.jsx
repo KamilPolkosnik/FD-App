@@ -1,11 +1,10 @@
 import { Image, View } from "react-native";
-import { mainButton } from "../../styles/AppStyles";
 import React from "react";
 import { Shadow } from "react-native-shadow-2";
 import BackgroundGradient from "../../hoc/BackgroundGradient";
 import HeaderText from "../../components/HeaderText";
 import StyledButton from "../../components/StyledButton";
-import { auth } from '../../firebase/FirebaseConfig';
+import { auth } from "../../firebase/FirebaseConfig";
 
 const HomeScreen = ({ navigation }) => {
   if (auth.currentUser) {
@@ -13,7 +12,7 @@ const HomeScreen = ({ navigation }) => {
   }
 
   return (
-    <BackgroundGradient>
+    <BackgroundGradient marginHorizontal={40} justifyContent={'center'} flex={1}>
       <HeaderText text={"Finanse & Dyscyplina"} />
       <Shadow
         distance={30}
@@ -38,31 +37,15 @@ const HomeScreen = ({ navigation }) => {
           justifyContent: "space-evenly",
         }}
       >
-        <Shadow
-          distance={10}
-          style={{ width: "100%", borderRadius: 10 }}
-          startColor={mainButton}
-          endColor={"#43EDF600"}
-          offset={[0, 0]}
-        >
-          <StyledButton
-            onPress={() => navigation.navigate("Login")}
-            text={"LOGOWANIE"}
-          />
-        </Shadow>
-        <Shadow
-          distance={10}
-          style={{ width: "100%", borderRadius: 10 }}
-          startColor={mainButton}
-          endColor={"#43EDF600"}
-          offset={[0, 0]}
-        >
-          <StyledButton
-            style={{ marginTop: 10 }}
-            onPress={() => navigation.navigate("Register")}
-            text={"ZAŁÓŻ KONTO"}
-          />
-        </Shadow>
+        <StyledButton
+          onPress={() => navigation.navigate("Login")}
+          text={"LOGOWANIE"}
+        />
+        <StyledButton
+          style={{ marginTop: 10 }}
+          onPress={() => navigation.navigate("Register")}
+          text={"ZAŁÓŻ KONTO"}
+        />
       </View>
     </BackgroundGradient>
   );

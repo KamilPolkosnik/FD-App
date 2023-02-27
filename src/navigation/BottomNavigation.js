@@ -18,12 +18,26 @@ function BottomNavigation() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          height: "8%",
-          paddingBottom: 10,
-          paddingTop: 5,
           borderTopWidth: 0,
           elevation: 0,
+          height: 60,
         },
+        tabBarActiveTintColor: "#00FF15",
+        tabBarInactiveTintColor: "#36B2EB",
+          tabBarBackground: () => (
+            <LinearGradient
+              colors={[mainBlue, mainPurple]}
+              style={{ flex: 1, height: "100%" }}
+            />
+          ),
+          tabBarLabelStyle: {
+            paddingBottom: 8,
+            fontSize: 14,
+            width: '100%'
+          },
+          tabBarIconStyle: {
+            marginTop: 7
+          }
       }}
     >
       <Tab.Screen
@@ -31,15 +45,8 @@ function BottomNavigation() {
         component={Dashboard}
         options={{
           tabBarLabel: "Panel",
-          tabBarLabelStyle: { color: "#00FF15", fontSize: 14 },
-          tabBarBackground: () => (
-            <LinearGradient
-              colors={[mainBlue, mainPurple]}
-              style={{ flex: 1, height: "100%" }}
-            />
-          ),
-          tabBarIcon: () => (
-            <FontAwesome5 name="home" color={"#00FF15"} size={24} />
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="home" color={color} size={24}/>
           ),
         }}
       />
@@ -48,15 +55,8 @@ function BottomNavigation() {
         component={Habbits}
         options={{
           tabBarLabel: "Nawyki",
-          tabBarLabelStyle: { color: "#00FF15", fontSize: 14 },
-          tabBarBackground: () => (
-            <LinearGradient
-              colors={[mainBlue, mainPurple]}
-              style={{ flex: 1, height: "100%" }}
-            />
-          ),
-          tabBarIcon: () => (
-            <Feather name="trending-up" color={"#00FF15"} size={24} />
+          tabBarIcon: ({ color }) => (
+            <Feather name="trending-up" color={color} size={24} />
           ),
         }}
       />
@@ -65,19 +65,8 @@ function BottomNavigation() {
         component={Finance}
         options={{
           tabBarLabel: "Finanse",
-          tabBarLabelStyle: { color: "#00FF15", fontSize: 14 },
-          tabBarBackground: () => (
-            <LinearGradient
-              colors={[mainBlue, mainPurple]}
-              style={{ flex: 1, height: "100%" }}
-            />
-          ),
-          tabBarIcon: () => (
-            <MaterialCommunityIcons
-              name="finance"
-              color={"#00FF15"}
-              size={24}
-            />
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="finance" color={color} size={24} />
           ),
         }}
       />
@@ -86,15 +75,8 @@ function BottomNavigation() {
         component={Settings}
         options={{
           tabBarLabel: "Ustawienia",
-          tabBarLabelStyle: { color: "#00FF15", fontSize: 14 },
-          tabBarBackground: () => (
-            <LinearGradient
-              colors={[mainBlue, mainPurple]}
-              style={{ flex: 1, height: "100%" }}
-            />
-          ),
-          tabBarIcon: () => (
-            <Feather name="settings" color={"#00FF15"} size={24} />
+          tabBarIcon: ({ color }) => (
+            <Feather name="settings" color={color} size={24} />
           ),
         }}
       />
@@ -103,3 +85,4 @@ function BottomNavigation() {
 }
 
 export default BottomNavigation;
+
