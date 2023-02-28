@@ -56,4 +56,3 @@ const StyledButton = ({ onPress, text, loading, marginBottom }) => {
 };
 
 export default StyledButton;
-

@@ -1,11 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Dashboard from "../screens/post-auth/Dashboard";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Feather from "@expo/vector-icons/Feather";
+import { Ionicons, MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { mainBlue, mainPurple } from "../styles/AppStyles";
+import { mainBlue, mainGreen, mainPurple } from "../styles/AppStyles";
 import Settings from "../screens/post-auth/Settings";
 import Finance from "../screens/post-auth/Finance";
 import Habbits from "../screens/post-auth/Habbits";
@@ -18,35 +16,37 @@ function BottomNavigation() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          borderTopWidth: 0,
+          borderTopWidth: 2,
+          borderTopColor: mainGreen,
           elevation: 0,
-          height: 60,
+          height: 65,
         },
-        tabBarActiveTintColor: "#00FF15",
+        tabBarActiveTintColor: mainGreen,
         tabBarInactiveTintColor: "#36B2EB",
-          tabBarBackground: () => (
-            <LinearGradient
-              colors={[mainBlue, mainPurple]}
-              style={{ flex: 1, height: "100%" }}
-            />
-          ),
-          tabBarLabelStyle: {
-            paddingBottom: 8,
-            fontSize: 14,
-            width: '100%'
-          },
-          tabBarIconStyle: {
-            marginTop: 7
-          }
+        tabBarBackground: () => (
+          <LinearGradient
+            colors={[mainBlue, mainPurple]}
+            style={{ flex: 1, height: "100%" }}
+            locations={[0.1, 0.8]}
+          />
+        ),
+        tabBarLabelStyle: {
+          paddingBottom: 10,
+          fontSize: 14,
+          width: "100%",
+        },
+        tabBarIconStyle: {
+          marginTop: 9,
+        },
       }}
     >
       <Tab.Screen
         name="Panel"
         component={Dashboard}
         options={{
-          tabBarLabel: "Panel",
+          tabBarLabel: "Artykuły",
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="home" color={color} size={24}/>
+            <Ionicons name="reader-outline" size={24} color={color} />
           ),
         }}
       />
@@ -85,4 +85,3 @@ function BottomNavigation() {
 }
 
 export default BottomNavigation;
-

@@ -6,6 +6,7 @@ import RedirectScreen from "../screens/pre-auth/RedirectScreen";
 import HomeScreen from "../screens/pre-auth/HomeScreen";
 import RemindPasswordScreen from "../screens/pre-auth/RemindPasswordScreen";
 import BottomNavigation from "./BottomNavigation";
+import ArticleContent from "../screens/post-auth/ArticleContent";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ function AuthNavigation() {
       <Stack.Screen name="Remind" component={RemindPasswordScreen} />
       <Stack.Screen name="Redirect" component={RedirectScreen} />
       <Stack.Screen name="PostAuth" component={BottomNavigation} />
+      <Stack.Screen name="ArticleContent" component={ArticleContent} />
     </Stack.Navigator>
   );
 }

@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 export const mainButton = '#43EDF6'
-export const mainBlue = "#044390"
-export const mainPurple = "#550475"
+export const mainBlue = "#164f8f"
+export const mainPurple = '#26144e'
+export const mainGreen = "#00FF15"
 
 export default StyleSheet.create({
     homeTitle: {
       fontSize: 30,
-      color: 'white',
+      color: mainGreen,
       textAlign: 'center',
       textTransform: 'uppercase',
       fontFamily: "Open-Sans-Bold",

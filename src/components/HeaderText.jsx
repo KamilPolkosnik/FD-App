@@ -23,7 +23,21 @@ const HeaderText = ({ text, additionalStyling }) => {
     SplashScreen.hideAsync();
   }
 
-  return <Text style={[AppStyles.homeTitle, additionalStyling]}>{text}</Text>;
+  return (
+    <Text
+      style={[
+        AppStyles.homeTitle,
+        additionalStyling,
+        {
+          textShadowColor: "rgba(0, 0, 0, 0.75)",
+          textShadowOffset: { width: -3, height: 3 },
+          textShadowRadius: 5,
+        },
+      ]}
+    >
+      {text}
+    </Text>
+  );
 };
 
 export default HeaderText;
