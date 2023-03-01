@@ -30,12 +30,12 @@ const LoginScreen = ({ navigation }) => {
     setLoading(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
-        reset("", {
-          keepValues: false,
-          keepDefaultValues: false,
-        })
-        setLoading(false)
-        navigation.navigate("PostAuth", { user: userCredential.user });
+          reset("", {
+            keepValues: false,
+            keepDefaultValues: false,
+          });
+          setLoading(false);
+          navigation.navigate("PostAuth", { user: userCredential.user });
       })
       .catch((error) => {
         setLoading(false);
@@ -55,7 +55,11 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <BackgroundGradient marginHorizontal={30} justifyContent={'center'} flex={1}>
+    <BackgroundGradient
+      marginHorizontal={30}
+      justifyContent={"center"}
+      flex={1}
+    >
       <HeaderText
         text={"Logowanie"}
         additionalStyling={{ marginBottom: 0, marginTop: 50 }}
@@ -184,13 +188,13 @@ const LoginScreen = ({ navigation }) => {
         />
       </View>
       <ActivityIndicator
-        style={{ position: 'absolute', top: '50%' }}
+        style={{ position: "absolute", top: "50%" }}
         animating={loading}
         color={mainButton}
         size="large"
       />
     </BackgroundGradient>
-  )
+  );
 };
 
 export default LoginScreen;

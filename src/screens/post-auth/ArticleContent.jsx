@@ -17,7 +17,7 @@ const ArticleContent = ({ route }) => {
         <ImageBackground
           style={{
             width: "100%",
-            height: 250,
+            height: 200,
             alignItems: "center",
             justifyContent: "center",
           }}

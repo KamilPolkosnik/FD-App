@@ -9,7 +9,7 @@ import StyledButton from "../../components/StyledButton";
 import StyledInlineText from "../../components/StyledInlineText";
 import { TextInput, ActivityIndicator } from "react-native-paper";
 import { auth } from "../../firebase/FirebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { Controller } from "react-hook-form";
 
 const RegisterScreen = ({ navigation }) => {
@@ -31,6 +31,7 @@ const RegisterScreen = ({ navigation }) => {
     setLoading(true);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
+        sendEmailVerification(auth.currentUser)
         updateProfile(auth.currentUser, {
           displayName: name,
         });
@@ -42,7 +43,7 @@ const RegisterScreen = ({ navigation }) => {
         setLoading(false);
         navigation.navigate("Redirect", {
           redirectText:
-            "Udało się założyć konto. Za chwilę zostaniesz przekierowany do ekranu logowania.",
+            "Wejdź na podany adres e-mail i zweryfikuj swoje konto w celu zalogowania.",
           redirectToLogin: true,
         });
       })

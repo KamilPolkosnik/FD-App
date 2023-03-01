@@ -1,5 +1,6 @@
 import { TouchableOpacity, Text, ImageBackground } from "react-native";
 import React from "react";
+import { mainGreen } from "../styles/AppStyles";
 
 const Article = ({
   articleTitle,
@@ -20,13 +21,12 @@ const Article = ({
       }
       style={{
         width: "100%",
-        height: 250,
-        marginVertical: 3,
+        height: 250
       }}
     >
       <ImageBackground
         source={articleImage}
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        style={{ flex: 1, justifyContent: "center", alignItems: "center", borderBottomWidth: 2, borderBottomColor: mainGreen }}
         resizeMode={'cover'}
       >
         <Text
@@ -34,8 +34,8 @@ const Article = ({
             backgroundColor: "rgba(22, 79, 143, 0.7)",
             width: "100%",
             textAlign: "center",
-            height: 60,
-            lineHeight: 60,
+            height: 45,
+            lineHeight: 45,
             fontSize: 18,
             color: "white",
             fontFamily: "Open-Sans-Bold",

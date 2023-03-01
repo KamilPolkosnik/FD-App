@@ -25,9 +25,7 @@ const Settings = ({ navigation }) => {
   const { control, handleSubmit, watch, reset } = useForm();
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [snackBarInfo, setSnackBarInfo] = useState(
-    `Link do zmiany hasła został wysłany na adres email: ${auth.currentUser.email}`
-  );
+  const [snackBarInfo, setSnackBarInfo] = useState('');
   const [color, setColor] = useState("black");
   const [modalVisible, setModalVisible] = useState(false);
   const [changeModalVisible, setChangeModalVisible] = useState(false);
@@ -115,7 +113,7 @@ const Settings = ({ navigation }) => {
               borderBottomColor: mainGreen,
               borderBottomWidth: 2,
             }}
-            locations={[0.1, 0.8]}
+            locations={[0.5, 0.99]}
           >
             <FontAwesome name="user-circle-o" size={54} color={mainButton} />
             <View style={{ marginLeft: 15, alignItems: "center" }}>
@@ -127,6 +125,7 @@ const Settings = ({ navigation }) => {
                   color: "white",
                   fontFamily: "Open-Sans-Bold",
                   marginTop: 2,
+                  textTransform: 'capitalize'
                 }}
               >
                 {auth.currentUser.displayName}

@@ -7,6 +7,9 @@ import HomeScreen from "../screens/pre-auth/HomeScreen";
 import RemindPasswordScreen from "../screens/pre-auth/RemindPasswordScreen";
 import BottomNavigation from "./BottomNavigation";
 import ArticleContent from "../screens/post-auth/ArticleContent";
+import MorningHabbits from "../screens/post-auth/habbits/MorningHabbits";
+import DuringDayHabbits from "../screens/post-auth/habbits/DuringDayHabbits";
+import EveningHabbits from "../screens/post-auth/habbits/EveningHabbits";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +23,9 @@ function AuthNavigation() {
       <Stack.Screen name="Redirect" component={RedirectScreen} />
       <Stack.Screen name="PostAuth" component={BottomNavigation} />
       <Stack.Screen name="ArticleContent" component={ArticleContent} />
+      <Stack.Screen name="MorningHabbits" component={MorningHabbits} />
+      <Stack.Screen name="DuringDayHabbits" component={DuringDayHabbits} />
+      <Stack.Screen name="EveningHabbits" component={EveningHabbits} />
     </Stack.Navigator>
   );
 }
