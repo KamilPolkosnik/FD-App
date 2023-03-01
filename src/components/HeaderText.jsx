@@ -29,7 +29,7 @@ const HeaderText = ({ text, additionalStyling }) => {
         AppStyles.homeTitle,
         additionalStyling,
         {
-          textShadowColor: "rgba(0, 0, 0, 0.75)",
+          textShadowColor: "rgba(100, 100, 100, 0.75)",
           textShadowOffset: { width: -3, height: 3 },
           textShadowRadius: 5,
         },

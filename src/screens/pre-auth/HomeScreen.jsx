@@ -5,10 +5,17 @@ import BackgroundGradient from "../../hoc/BackgroundGradient";
 import HeaderText from "../../components/HeaderText";
 import StyledButton from "../../components/StyledButton";
 import { auth } from "../../firebase/FirebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
 const HomeScreen = ({ navigation }) => {
   if (auth.currentUser) {
-    navigation.navigate("PostAuth", { user: auth.currentUser });
+    navigation.navigate("PostAuth");
+  } else {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigation.navigate('PostAuth')
+      }
+    })
   }
 
   return (

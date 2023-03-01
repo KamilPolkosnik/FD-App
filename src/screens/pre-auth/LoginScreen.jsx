@@ -8,7 +8,7 @@ import HeaderText from "../../components/HeaderText";
 import StyledButton from "../../components/StyledButton";
 import StyledInlineText from "../../components/StyledInlineText";
 import { TextInput, ActivityIndicator } from "react-native-paper";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/FirebaseConfig";
 import { Controller } from "react-hook-form";
 
@@ -20,7 +20,13 @@ const LoginScreen = ({ navigation }) => {
   const nextButtonRef = useRef();
 
   if (auth.currentUser) {
-    navigation.navigate("PostAuth", { user: auth.currentUser });
+    navigation.navigate("PostAuth");
+  } else {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigation.navigate('PostAuth')
+      }
+    })
   }
 
   const { control, handleSubmit, reset } = useForm();

@@ -351,7 +351,7 @@ const Settings = ({ navigation }) => {
             </Text>
           </Snackbar>
           <ActivityIndicator
-            style={{ position: "absolute", top: "50%" }}
+            style={{ position: "absolute", top: "50%", alignSelf: 'center' }}
             animating={loading}
             color={mainButton}
             size="large"

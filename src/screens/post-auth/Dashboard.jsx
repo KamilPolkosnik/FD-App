@@ -70,6 +70,7 @@ const Dashboard = ({ navigation }) => {
       <FlatList
         style={{ width: "100%" }}
         data={articles}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <Article
             navigation={navigation}
