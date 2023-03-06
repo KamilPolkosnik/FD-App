@@ -81,7 +81,6 @@ const RemindPasswordScreen = ({ navigation }) => {
                 }}
                 outlineStyle={{ borderRadius: 15, borderWidth: 0 }}
                 mode="outlined"
-                autoCapitalize={false}
                 left={
                   <TextInput.Icon icon={"account"} iconColor={mainButton} />
                 }

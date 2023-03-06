@@ -99,7 +99,6 @@ const LoginScreen = ({ navigation }) => {
                 }}
                 blurOnSubmit={false}
                 mode="outlined"
-                autoCapitalize={false}
                 left={
                   <TextInput.Icon icon={"account"} iconColor={mainButton} />
                 }
@@ -140,7 +139,6 @@ const LoginScreen = ({ navigation }) => {
                 outlineStyle={{ borderRadius: 15, borderWidth: 0 }}
                 mode="outlined"
                 ref={nextButtonRef}
-                autoCapitalize={false}
                 secureTextEntry={secureTextEntry}
                 left={<TextInput.Icon icon={"lock"} iconColor={mainButton} />}
                 right={

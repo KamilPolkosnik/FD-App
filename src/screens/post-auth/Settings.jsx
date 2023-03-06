@@ -188,7 +188,6 @@ const Settings = ({ navigation }) => {
                       }}
                       blurOnSubmit={false}
                       mode="outlined"
-                      autoCapitalize={true}
                       left={
                         <TextInput.Icon
                           icon={"account"}
@@ -239,7 +238,6 @@ const Settings = ({ navigation }) => {
                       }}
                       outlineStyle={{ borderRadius: 15, borderWidth: 0 }}
                       mode="outlined"
-                      autoCapitalize={false}
                       secureTextEntry={secureTextEntry}
                       left={
                         <TextInput.Icon icon={"lock"} iconColor={mainButton} />

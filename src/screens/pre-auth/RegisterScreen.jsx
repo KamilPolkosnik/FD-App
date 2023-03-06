@@ -102,7 +102,6 @@ const RegisterScreen = ({ navigation }) => {
                 }}
                 blurOnSubmit={false}
                 mode="outlined"
-                autoCapitalize={true}
                 left={
                   <TextInput.Icon icon={"account"} iconColor={mainButton} />
                 }
@@ -152,7 +151,6 @@ const RegisterScreen = ({ navigation }) => {
                 }}
                 blurOnSubmit={false}
                 mode="outlined"
-                autoCapitalize={false}
                 left={
                   <TextInput.Icon icon={"account"} iconColor={mainButton} />
                 }
@@ -203,7 +201,6 @@ const RegisterScreen = ({ navigation }) => {
                 blurOnSubmit={false}
                 ref={nextButton2Ref}
                 mode="outlined"
-                autoCapitalize={false}
                 secureTextEntry={secureTextEntry}
                 left={<TextInput.Icon icon={"lock"} iconColor={mainButton} />}
                 right={
@@ -252,7 +249,6 @@ const RegisterScreen = ({ navigation }) => {
                 outlineStyle={{ borderRadius: 15, borderWidth: 0 }}
                 ref={nextButton3Ref}
                 mode="outlined"
-                autoCapitalize={false}
                 secureTextEntry={secureTextEntry}
                 left={<TextInput.Icon icon={"lock"} iconColor={mainButton} />}
                 placeholder="Powtórz Hasło"
