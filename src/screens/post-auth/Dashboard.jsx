@@ -14,6 +14,7 @@ import { articles } from "../../components/articles/articles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button, Snackbar } from "react-native-paper";
 import { sendEmailVerification, signOut } from "firebase/auth";
+import { uuidv4 } from "@firebase/util";
 
 const Dashboard = ({ navigation }) => {
   const onDismissSnackBar = () => setVisible(false);
@@ -70,7 +71,7 @@ const Dashboard = ({ navigation }) => {
       <FlatList
         style={{ width: "100%" }}
         data={articles}
-        keyExtractor={(item) => item.id}
+        keyExtractor={() => uuidv4()}
         renderItem={({ item }) => (
           <Article
             navigation={navigation}
