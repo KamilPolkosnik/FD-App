@@ -5,8 +5,8 @@ import { Ionicons, MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { mainBlue, mainGreen, mainPurple } from "../styles/AppStyles";
 import Settings from "../screens/post-auth/Settings";
-import Finance from "../screens/post-auth/Finance";
-import Habbits from "../screens/post-auth/Habbits";
+import TopNavigation from "./TopNavigation";
+import TopNavigationFinance from "./TopNavigationFinance";
 
 const Tab = createBottomTabNavigator();
 
@@ -52,7 +52,7 @@ function BottomNavigation() {
       />
       <Tab.Screen
         name="Habbits"
-        component={Habbits}
+        component={TopNavigation}
         options={{
           tabBarLabel: "Nawyki",
           tabBarIcon: ({ color }) => (
@@ -61,8 +61,8 @@ function BottomNavigation() {
         }}
       />
       <Tab.Screen
-        name="Finance"
-        component={Finance}
+        name="Finances"
+        component={TopNavigationFinance}
         options={{
           tabBarLabel: "Finanse",
           tabBarIcon: ({ color }) => (

@@ -1,34 +1,63 @@
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { mainBlue, mainGreen, mainButton } from "../styles/AppStyles";
+import { auth } from "../firebase/FirebaseConfig";
+import BackgroundGradient from "../hoc/BackgroundGradient";
 import { Text } from "react-native";
-import React, {useState} from "react";
-import BackgroundGradient from "../../hoc/BackgroundGradient";
-import { mainButton } from "../../styles/AppStyles";
-import { auth } from "../../firebase/FirebaseConfig";
 import { Button, Snackbar } from "react-native-paper";
-import { sendEmailVerification, signOut } from "firebase/auth";
+import React, { useState } from "react";
+import Income from "../screens/post-auth/finance/Income";
+import Outcome from "../screens/post-auth/finance/Outcome";
+import Summary from "../screens/post-auth/finance/Summary";
 
-const Finance = () => {
+const Tab = createMaterialTopTabNavigator();
 
+function MyTabs() {
   const onDismissSnackBar = () => setVisible(false);
   const [color, setColor] = useState("black");
   const [visible, setVisible] = useState(false);
   const [snackBarInfo, setSnackBarInfo] = useState("");
   const [snackBarLogInfo, setSnackBarLogInfo] = useState("");
-
+  const insets = useSafeAreaInsets();
   return auth.currentUser.emailVerified ? (
-    <BackgroundGradient
-      justifyContent={"center"}
-      marginHorizontal={30}
-      flex={1}
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: mainGreen,
+        tabBarInactiveTintColor: "#36B2EB",
+        tabBarStyle: {
+          backgroundColor: mainBlue,
+          paddingTop: insets.top,
+          borderBottomWidth: 0,
+          elevation: 0,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: "Open-Sans-Bold",
+        },
+        tabBarIndicatorStyle: {
+          backgroundColor: mainGreen,
+        },
+      }}
     >
-      <Text>Finance</Text>
-    </BackgroundGradient>
+      <Tab.Screen
+        name="Income"
+        component={Income}
+        options={{ tabBarLabel: "Przychody" }}
+      />
+      <Tab.Screen
+        name="Outcome"
+        component={Outcome}
+        options={{ tabBarLabel: "Wydatki" }}
+      />
+      <Tab.Screen
+        name="Summary"
+        component={Summary}
+        options={{ tabBarLabel: "Podsumowanie" }}
+      />
+    </Tab.Navigator>
   ) : (
-    <BackgroundGradient
-    justifyContent={"center"}
-    marginHorizontal={0}
-    flex={1}
-  >
-          <Text
+    <BackgroundGradient marginHorizontal={0} justifyContent={"center"} flex={1}>
+      <Text
         style={{ color: "white", fontFamily: "Open-Sans-Bold", fontSize: 22 }}
       >
         Zweryfikuj swoje konto
@@ -105,8 +134,10 @@ const Finance = () => {
           {snackBarLogInfo}
         </Text>
       </Snackbar>
-  </BackgroundGradient>
-  )
-};
+    </BackgroundGradient>
+  );
+}
 
-export default Finance;
+export default function TopNavigationFinance() {
+  return <MyTabs />;
+}

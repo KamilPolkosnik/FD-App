@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
             keepDefaultValues: false,
           });
           setLoading(false);
-          navigation.navigate("PostAuth", { user: userCredential.user });
+          navigation.navigate("PostAuth");
       })
       .catch((error) => {
         setLoading(false);

@@ -8,7 +8,6 @@ import {
   Modal,
   Portal,
   ActivityIndicator,
-  FAB,
 } from "react-native-paper";
 import {
   mainBlue,
@@ -36,6 +35,7 @@ import { TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { numberPattern } from "../../../../utils/validation.utils";
+import { Octicons } from "@expo/vector-icons";
 
 const MorningHabbits = () => {
   const [habbits, setHabbits] = useState([]);
@@ -76,8 +76,8 @@ const MorningHabbits = () => {
       isDone: false,
       userId: auth.currentUser.uid,
       sortDate: new Date(),
-      date: new Date().toLocaleString().replace(/AM|PM/,''),
-      activityDate: null
+      date: new Date().toLocaleString().replace(/AM|PM/, ""),
+      activityDate: null,
     });
   };
 
@@ -128,7 +128,7 @@ const MorningHabbits = () => {
         colors={[mainBlue, mainPurple]}
         style={{
           width: "100%",
-          height: "30%",
+          height: "25%",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
@@ -159,7 +159,7 @@ const MorningHabbits = () => {
                 style={{
                   fontFamily: "Open-Sans-Bold",
                   color: "white",
-                  fontSize: 16,
+                  fontSize: 13,
                   marginBottom: 3,
                 }}
               >
@@ -169,7 +169,7 @@ const MorningHabbits = () => {
               </Text>
               {habbits.length > 0 ? (
                 <CircularProgress
-                  radius={30}
+                  radius={25}
                   activeStrokeWidth={5}
                   inActiveStrokeWidth={3}
                   value={restProgress}
@@ -195,7 +195,7 @@ const MorningHabbits = () => {
                   style={{
                     fontFamily: "Open-Sans-Bold",
                     color: "white",
-                    fontSize: 16,
+                    fontSize: 13,
                   }}
                 >
                   Zadania wykonane: {habbitsDone.length}
@@ -203,7 +203,7 @@ const MorningHabbits = () => {
               ) : null}
               {habbits.length > 0 ? (
                 <CircularProgress
-                  radius={30}
+                  radius={25}
                   activeStrokeWidth={5}
                   inActiveStrokeWidth={3}
                   value={progressBarDone}
@@ -239,7 +239,7 @@ const MorningHabbits = () => {
             }}
             data={habbits.sort((a, b) => a.sortDate - b.sortDate)}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <LinearGradient
                 start={[1.4, 0]}
                 end={[0, 1]}
@@ -249,7 +249,8 @@ const MorningHabbits = () => {
                   flexDirection: "row",
                   backgroundColor: item.isDone ? "green" : "#F17B7B",
                   marginHorizontal: 10,
-                  marginBottom: 5,
+                  marginTop: index === 0 ? 10: 0,
+                  marginBottom: index === habbits.length - 1 ? 20 : 5,
                   borderRadius: 5,
                 }}
               >
@@ -274,33 +275,31 @@ const MorningHabbits = () => {
                   >
                     {item.task}
                   </Text>
-                    <Text
-                      style={{
-                        color: item.isDone ? "lightgray" : "white",
-                        fontFamily: "Open-Sans-Bold",
-                        fontSize: 12,
-                        textDecorationLine: item.isDone
-                          ? "line-through"
-                          : "none",
-                        textDecorationStyle: item.isDone ? "solid" : null,
-                      }}
-                    >
-                      Godzina: {item.time}
-                    </Text>
-                    <Text
-                      style={{
-                        color: item.isDone ? "lightgray" : "white",
-                        fontFamily: "Open-Sans-Bold",
-                        fontSize: 11,
-                        textDecorationLine: item.isDone
-                          ? "line-through"
-                          : "none",
-                        textDecorationStyle: item.isDone ? "solid" : null,
-                        marginTop: 2
-                      }}
-                    >
-                      {item.activityDate ? `Ostatnia aktywność: ${item.activityDate}` : `Data utworzenia: ${item.date}`}
-                    </Text>
+                  <Text
+                    style={{
+                      color: item.isDone ? "lightgray" : "white",
+                      fontFamily: "Open-Sans-Bold",
+                      fontSize: 12,
+                      textDecorationLine: item.isDone ? "line-through" : "none",
+                      textDecorationStyle: item.isDone ? "solid" : null,
+                    }}
+                  >
+                    Godzina: {item.time}
+                  </Text>
+                  <Text
+                    style={{
+                      color: item.isDone ? "lightgray" : "white",
+                      fontFamily: "Open-Sans-Bold",
+                      fontSize: 11,
+                      textDecorationLine: item.isDone ? "line-through" : "none",
+                      textDecorationStyle: item.isDone ? "solid" : null,
+                      marginTop: 2,
+                    }}
+                  >
+                    {item.activityDate
+                      ? `Ostatnia aktywność: ${item.activityDate}`
+                      : `Data utworzenia: ${item.date}`}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -317,7 +316,9 @@ const MorningHabbits = () => {
                         const task = doc(db, "morningTasks", item.id);
                         await updateDoc(task, {
                           isDone: false,
-                          activityDate: new Date().toLocaleString().replace(/AM|PM/,'')
+                          activityDate: new Date()
+                            .toLocaleString()
+                            .replace(/AM|PM/, ""),
                         });
                         setActiveIndicator(true);
                         getHabbits();
@@ -337,7 +338,9 @@ const MorningHabbits = () => {
                         const task = doc(db, "morningTasks", item.id);
                         await updateDoc(task, {
                           isDone: true,
-                          activityDate: new Date().toLocaleString().replace(/AM|PM/,'')
+                          activityDate: new Date()
+                            .toLocaleString()
+                            .replace(/AM|PM/, ""),
                         });
                         setActiveIndicator(true);
                         getHabbits();
@@ -394,19 +397,25 @@ const MorningHabbits = () => {
       )}
       <View
         style={{
-          paddingTop: 10,
+          flexDirection: "row",
           borderTopColor: mainGreen,
           borderTopWidth: 2,
           width: "100%",
-          alignItems: "center",
+          justifyContent: "space-evenly",
+          height: 60,
         }}
       >
-        <FAB
-          icon="plus"
-          style={{ marginBottom: 10, backgroundColor: mainButton }}
-          customSize={60}
+        <TouchableOpacity
           onPress={() => setModalVisible(true)}
-        />
+          style={{
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: mainBlue,
+          }}
+        >
+          <Octicons name="diff-added" size={34} color={mainGreen} />
+        </TouchableOpacity>
       </View>
       <Portal>
         <Modal
