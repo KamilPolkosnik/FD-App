@@ -82,7 +82,7 @@ const LoginScreen = ({ navigation }) => {
             },
           }}
           render={({
-            field: { value = "", onChange, onBlur },
+            field: { value = "surokamil@gmail.com", onChange, onBlur },
             fieldState: { error },
           }) => (
             <>
@@ -126,7 +126,7 @@ const LoginScreen = ({ navigation }) => {
             required: "Pole wymagane",
           }}
           render={({
-            field: { value = "", onChange, onBlur },
+            field: { value = "@Surokamil1234", onChange, onBlur },
             fieldState: { error },
           }) => (
             <>

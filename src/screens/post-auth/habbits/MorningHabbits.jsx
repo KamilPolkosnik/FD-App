@@ -76,7 +76,15 @@ const MorningHabbits = () => {
       isDone: false,
       userId: auth.currentUser.uid,
       sortDate: new Date(),
-      date: new Date().toLocaleString().replace(/AM|PM/, ""),
+      date: new Date()
+        .toLocaleString(["pl"], {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+        .replace(/AM|PM/, ""),
       activityDate: null,
     });
   };
@@ -247,9 +255,8 @@ const MorningHabbits = () => {
                 style={{
                   paddingVertical: 10,
                   flexDirection: "row",
-                  backgroundColor: item.isDone ? "green" : "#F17B7B",
                   marginHorizontal: 10,
-                  marginTop: index === 0 ? 10: 0,
+                  marginTop: index === 0 ? 10 : 0,
                   marginBottom: index === habbits.length - 1 ? 20 : 5,
                   borderRadius: 5,
                 }}
@@ -317,7 +324,13 @@ const MorningHabbits = () => {
                         await updateDoc(task, {
                           isDone: false,
                           activityDate: new Date()
-                            .toLocaleString()
+                            .toLocaleString(["pl"], {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
                             .replace(/AM|PM/, ""),
                         });
                         setActiveIndicator(true);
@@ -339,7 +352,13 @@ const MorningHabbits = () => {
                         await updateDoc(task, {
                           isDone: true,
                           activityDate: new Date()
-                            .toLocaleString()
+                            .toLocaleString(["pl"], {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
                             .replace(/AM|PM/, ""),
                         });
                         setActiveIndicator(true);
@@ -478,7 +497,7 @@ const MorningHabbits = () => {
                       iconColor={mainButton}
                     />
                   }
-                  placeholder="Wpisz zadanie"
+                  placeholder="Zadanie"
                   placeholderTextColor={"white"}
                   textColor={"white"}
                   value={value}
