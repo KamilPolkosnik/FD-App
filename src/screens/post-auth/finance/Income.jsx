@@ -29,7 +29,6 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../../../firebase/FirebaseConfig";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Income = () => {
   const { control, handleSubmit, reset, watch } = useForm();
@@ -37,7 +36,6 @@ const Income = () => {
   const [activeIndicator, setActiveIndicator] = useState(true);
   const [incomes, setIncomes] = useState([]);
   const [summary, setSummary] = useState();
-  const [latestDate, setLatestDate] = useState();
 
   const hideModal = () => setModalVisible(false);
   const nextButton1Ref = useRef();
@@ -88,10 +86,6 @@ const Income = () => {
     getIncomes()
   }, []);
 
-  useEffect(() => {
-    getLatestDate()
-  }, [incomes]);
-
   const confirmAddIncome = () => {
     addIncome();
     setActiveIndicator(true);
@@ -102,16 +96,6 @@ const Income = () => {
     });
     setModalVisible(false);
   };
-
-  let datedate = ""
-
-  const getLatestDate = () => {
-    if (incomes > 0) {
-    let length = incomes.length - 1
-    let latestDate = incomes[length].date
-    let datedate = latestDate
-    }
-}
 
   return (
     <BackgroundGradient marginHorizontal={0} justifyContent={"center"} flex={1}>
@@ -407,6 +391,7 @@ const Income = () => {
               fontSize: 18,
               fontFamily: "Open-Sans-Bold",
               marginBottom: 10,
+              marginTop: 15
             }}
           >
             Kwota przychodu

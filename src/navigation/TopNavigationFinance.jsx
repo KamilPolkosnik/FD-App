@@ -47,7 +47,7 @@ function MyTabs() {
       <Tab.Screen
         name="Outcome"
         component={Outcome}
-        options={{ tabBarLabel: "Wydatki" }}
+        options={{ tabBarLabel: "Rozchody" }}
       />
       <Tab.Screen
         name="Summary"
