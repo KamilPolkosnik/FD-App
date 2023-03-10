@@ -8,7 +8,7 @@ export const mainGreen = "#00FF15"
 export default StyleSheet.create({
     homeTitle: {
       fontSize: 30,
-      color: mainGreen,
+      color: 'white',
       textAlign: 'center',
       textTransform: 'uppercase',
       fontFamily: "Open-Sans-Bold",

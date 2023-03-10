@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "FinanceAndDisciplineApp",
-    "slug": "FinanceAndDisciplineApp",
+    "name": "Finanse&Dyscyplina",
+    "slug": "finanse-i-dyscyplina",
+    "description": "An application to manage private finances and good habits that help maintain daily discipline.",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
