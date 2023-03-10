@@ -29,8 +29,12 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../../../firebase/FirebaseConfig";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { getOutcomeSummary } from "../../../reducers/summarySlice";
 
 const Outcome = () => {
+  const dispatch = useDispatch();
+
   const { control, handleSubmit, reset, watch } = useForm();
   const [modalVisible, setModalVisible] = useState(false);
   const [activeIndicator, setActiveIndicator] = useState(true);
@@ -84,6 +88,7 @@ const Outcome = () => {
     for (var i = 0; i < outcomesTable.length; i++) {
       sum = sum + outcomesTable[i];
       setSummary(sum);
+      dispatch(getOutcomeSummary(sum))
     }
     setOutcomes(outcomes);
     setActiveIndicator(false);
@@ -97,6 +102,7 @@ const Outcome = () => {
     addOutcome();
     setActiveIndicator(true);
     getOutcomes();
+    dispatch(getOutcomeSummary(summary))
     reset("", {
       keepValues: false,
       keepDefaultValues: false,

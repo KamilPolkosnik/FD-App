@@ -29,8 +29,12 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../../../firebase/FirebaseConfig";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { getIncomeSummary } from "../../../reducers/summarySlice";
 
 const Income = () => {
+  const dispatch = useDispatch();
+
   const { control, handleSubmit, reset, watch } = useForm();
   const [modalVisible, setModalVisible] = useState(false);
   const [activeIndicator, setActiveIndicator] = useState(true);
@@ -45,13 +49,20 @@ const Income = () => {
     : null;
   let incomeName = watch("name");
 
-
   const addIncome = async () => {
     const docRef = await addDoc(collection(db, "income"), {
       incomeName: incomeName,
       incomeValue: incomeFiltered,
       userId: auth.currentUser.uid,
-      date: new Date().toLocaleString(["pl"], {day:'2-digit', month:'2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit'}).replace(/AM|PM/, ""),
+      date: new Date()
+        .toLocaleString(["pl"], {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+        .replace(/AM|PM/, ""),
       sortDate: new Date(),
     });
   };
@@ -77,19 +88,21 @@ const Income = () => {
     for (var i = 0; i < incomesTable.length; i++) {
       sum = sum + incomesTable[i];
       setSummary(sum);
+      dispatch(getIncomeSummary(sum))
     }
     setIncomes(incomes);
     setActiveIndicator(false);
   };
 
   useEffect(() => {
-    getIncomes()
+    getIncomes();
   }, []);
 
   const confirmAddIncome = () => {
     addIncome();
     setActiveIndicator(true);
     getIncomes();
+    dispatch(getIncomeSummary(summary))
     reset("", {
       keepValues: false,
       keepDefaultValues: false,
@@ -152,7 +165,10 @@ const Income = () => {
                     fontSize: 15,
                   }}
                 >
-                  Suma przychodów: <Text style={{color: mainGreen, fontSize: 18}}>{summary} zł</Text>
+                  Suma przychodów:{" "}
+                  <Text style={{ color: mainGreen, fontSize: 18 }}>
+                    {summary} zł
+                  </Text>
                 </Text>
               </>
             ) : null}
@@ -391,7 +407,7 @@ const Income = () => {
               fontSize: 18,
               fontFamily: "Open-Sans-Bold",
               marginBottom: 10,
-              marginTop: 15
+              marginTop: 15,
             }}
           >
             Kwota przychodu
